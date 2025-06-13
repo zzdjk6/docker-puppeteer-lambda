@@ -1,0 +1,17 @@
+{
+  "name": "docker-puppeteer-lambda",
+  "version": "1.0.0",
+  "description": "This project demonstrates how to set up a container-based lambda on AWS with Amazon Linux 2023 and latest Chrome version driven by puppeteer.",
+  "repository": "https://github.com/zzdjk6/docker-puppeteer-lambda",
+  "author": "Thor Chen",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.828.0",
+    "fs-extra": "^11.3.0",
+    "nanoid": "^5.1.5",
+    "puppeteer": "^24.10.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
+}
