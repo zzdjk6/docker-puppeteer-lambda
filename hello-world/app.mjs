@@ -1,9 +1,9 @@
 import puppeteer from "puppeteer";
-import {nanoid} from "nanoid";
+import { nanoid } from "nanoid";
 import fs from "node:fs";
-import fse from 'fs-extra/esm';
+import fse from "fs-extra/esm";
 import path from "node:path";
-import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 /**
  *
@@ -62,7 +62,7 @@ export const lambdaHandler = async (event, context) => {
   const payload = {
     filePath,
     fileName,
-    fileSize
+    fileSize,
   };
   console.log(`Saved file: ${JSON.stringify(payload)}`);
 
@@ -72,14 +72,18 @@ export const lambdaHandler = async (event, context) => {
   console.log("Upload file to S3");
   const fileContent = await fs.promises.readFile(filePath);
   const s3Client = new S3Client();
-  const s3BucketName = "docker-puppeteer-lambda-pdf"
+  const s3BucketName = "docker-puppeteer-lambda-pdf";
   const s3Command = new PutObjectCommand({
     Bucket: s3BucketName,
     Key: fileName,
     Body: fileContent,
   });
   await s3Client.send(s3Command);
-  console.log(`Uploaded file: s3://${s3BucketName}/${fileName}`)
+  console.log(`Uploaded file: s3://${s3BucketName}/${fileName}`);
+
+  console.log(
+    `Use this command to download file: aws s3 cp s3://${s3BucketName}/${fileName} ./${fileName}`,
+  );
 };
 
 const ensureFolderExists = (folderPath) => {
