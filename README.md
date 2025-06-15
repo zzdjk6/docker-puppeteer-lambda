@@ -15,7 +15,8 @@ sam build && sam local invoke HelloWorldFunction
 sam build && sam deploy
 
 # Invoke lambda
-aws lambda invoke --function-name <YOUR_FUNCTION_NAME_HERE> response.json
+sam remote invoke HelloWorldFunction
+# or aws lambda invoke --function-name <YOUR_FUNCTION_NAME_HERE> response.json
 
 # View logs
 sam logs HelloWorldFunction

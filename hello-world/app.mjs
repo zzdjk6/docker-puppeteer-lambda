@@ -58,10 +58,6 @@ export const lambdaHandler = async (event, context) => {
   await page.pdf({
     path: filePath,
   });
-
-  console.log("Close browser");
-  await browser.close();
-
   const fileSize = fs.statSync(filePath).size;
   const payload = {
     filePath,
@@ -70,21 +66,20 @@ export const lambdaHandler = async (event, context) => {
   };
   console.log(`Saved file: ${JSON.stringify(payload)}`);
 
-  console.log("Save to S3");
+  console.log("Close browser");
+  await browser.close();
+
+  console.log("Upload file to S3");
   const fileContent = await fs.promises.readFile(filePath);
   const s3Client = new S3Client();
+  const s3BucketName = "docker-puppeteer-lambda-pdf"
   const s3Command = new PutObjectCommand({
-    Bucket: "docker-puppeteer-lambda-pdf",
+    Bucket: s3BucketName,
     Key: fileName,
     Body: fileContent,
   });
   await s3Client.send(s3Command);
-
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify(payload),
-  };
-  return response;
+  console.log(`Uploaded file: s3://${s3BucketName}/${fileName}`)
 };
 
 const ensureFolderExists = (folderPath) => {
